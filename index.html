@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-TW" data-theme="gold">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- 要換：頁面標題、分享時顯示的描述 -->
+<title>祈祈｜所有資源</title>
+<meta name="description" content="祈祈整理的所有資源，一頁看完">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── 版型：沿用 2026-08-06-chatgpt-setup／2026-10-01-7-habits 的米色＋金橘 ── */
+:root{
+  --gold:#D4902A; --gold-bright:#E8A94A; --gold-dim:rgba(var(--a-rgb),0.30);
+  --bg:#F4F1EA; --bg2:#FBF8F2; --card:#FFFFFF; --card2:#FAF6EE;
+  --code:#12161f; --code-tx:#e6eaf2;
+  --text:#2c2a26; --dim:#6d6a62; --faint:#a8a39a; --ink:#2a2620;
+  --line:rgba(0,0,0,0.12);
+  --ok:#4a7c3f; --ok-bg:rgba(74,124,63,0.07); --ok-line:rgba(74,124,63,0.25);
+  --no:#b1431f; --no-bg:rgba(200,70,40,0.06); --no-line:rgba(200,70,40,0.22);
+  --dark:linear-gradient(160deg,#15110b 0%,#241a0e 100%);
+  --r-md:16px; --r-lg:22px; --pill:50px;
+  --bounce:400ms cubic-bezier(0.34,1.56,0.64,1);
+  --a-rgb:212,144,42; --sh-rgb:120,90,30; --bg-rgb:244,241,234; --on-accent:#1a1406;
+  --serif:"Noto Serif TC",serif; --sans:"Noto Sans TC","Inter",sans-serif; --mono:"JetBrains Mono",monospace;
+}
+/* ── 配色：改 <html data-theme="…"> 就會換。gold 米金／green 墨綠／navy 海軍藍／rose 乾燥玫瑰 ── */
+html[data-theme="green"]{--gold:#3F7D5C;--gold-bright:#5B9A77;--a-rgb:63,125,92;--bg:#EEF2EC;--bg2:#F7F9F5;--card2:#F3F6F1;--bg-rgb:238,242,236;--sh-rgb:40,70,50;--ink:#1f2a24;--on-accent:#ffffff;}
+html[data-theme="navy"]{--gold:#2F5D8C;--gold-bright:#4A7AAA;--a-rgb:47,93,140;--bg:#EDF1F5;--bg2:#F7F9FB;--card2:#F2F5F9;--bg-rgb:237,241,245;--sh-rgb:30,50,80;--ink:#1d2632;--on-accent:#ffffff;}
+html[data-theme="rose"]{--gold:#B5656B;--gold-bright:#C98389;--a-rgb:181,101,107;--bg:#F6EFEE;--bg2:#FBF7F6;--card2:#F8F1F0;--bg-rgb:246,239,238;--sh-rgb:110,60,60;--ink:#2e2324;--on-accent:#ffffff;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);color:var(--text);line-height:1.85;overflow-x:hidden;background:var(--bg);
+  background-image:radial-gradient(118% 54% at 50% 0%, rgba(var(--a-rgb),0.16) 0%, rgba(var(--a-rgb),0.05) 34%, rgba(var(--bg-rgb),0) 62%);
+  background-attachment:fixed;}
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.g1{position:absolute;width:min(60vw,680px);height:min(60vw,680px);border-radius:50%;background:radial-gradient(circle, rgba(var(--a-rgb),0.13), rgba(var(--a-rgb),0));top:-18%;right:-14%;filter:blur(20px);}
+.g2{position:absolute;width:min(50vw,560px);height:min(50vw,560px);border-radius:50%;background:radial-gradient(circle, rgba(var(--a-rgb),0.12), rgba(var(--a-rgb),0));bottom:-14%;left:-12%;filter:blur(22px);}
+.wrap{max-width:720px;margin:0 auto;position:relative;}
+.js .fade{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease;}
+.fade.vis{opacity:1;transform:translateY(0);}
+a{color:var(--gold);text-decoration:none;}
+.g{color:var(--gold);}
+
+/* ═════ ① 懸浮按鈕：電腦版掛右側、手機版浮在底部；滑到研究所介紹時自動收起 ═════ */
+.float-cta{position:fixed;z-index:40;transition:opacity .3s ease,transform .3s ease;}
+.float-cta.hide{opacity:0;pointer-events:none;}
+.fc-card{display:none;}
+.fc-pill{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--gold);color:var(--on-accent);font-weight:900;font-size:15px;padding:14px 26px;border-radius:var(--pill);box-shadow:0 10px 28px rgba(var(--sh-rgb),0.32);white-space:nowrap;}
+.fc-pill .ar{transition:transform .2s;}
+.fc-pill:hover .ar{transform:translateX(3px);}
+/* 手機／平板：底部置中 */
+@media(max-width:1119px){
+  .float-cta{left:50%;bottom:calc(16px + env(safe-area-inset-bottom));transform:translateX(-50%);}
+  .float-cta.hide{transform:translate(-50%,20px);}
+  body{padding-bottom:84px;}
+}
+/* 電腦：右側卡片 */
+@media(min-width:1120px){
+  .float-cta{top:120px;right:max(24px,calc((100vw - 720px)/2 - 272px));width:240px;}
+  .float-cta.hide{transform:translateX(16px);}
+  .fc-pill{display:none;}
+  .fc-card{display:block;background:linear-gradient(165deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--gold-dim);border-left:3px solid var(--gold);border-radius:var(--r-md);padding:20px 20px 22px;box-shadow:0 10px 34px rgba(var(--sh-rgb),0.13);}
+  .fc-card .k{font-family:var(--mono);font-size:10px;letter-spacing:0.16em;color:var(--gold);margin-bottom:10px;font-weight:500;}
+  .fc-card h4{font-family:var(--serif);font-weight:900;font-size:17px;line-height:1.5;color:var(--ink);margin-bottom:9px;}
+  .fc-card p{font-size:12.5px;color:var(--dim);line-height:1.7;margin-bottom:16px;}
+  .fc-card a{display:block;text-align:center;background:var(--gold);color:var(--on-accent);font-weight:900;font-size:14px;padding:12px 14px;border-radius:var(--pill);box-shadow:0 6px 18px rgba(var(--a-rgb),0.26);transition:transform var(--bounce);}
+  .fc-card a:hover{transform:translateY(-2px);}
+}
+
+/* ═════ 開頭：只交代「這頁是什麼」，自介移到最下面 ═════ */
+.hero{position:relative;z-index:1;padding:60px 30px 36px;}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:0.2em;color:var(--gold);margin-bottom:20px;font-weight:500;}
+.hero h1{font-family:var(--serif);font-weight:900;font-size:36px;line-height:1.36;margin-bottom:14px;color:var(--ink);}
+.hero .h-sub{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--gold);margin-bottom:14px;}
+.hero-sub{font-size:15px;color:var(--dim);line-height:1.85;margin-bottom:24px;}
+/* 這頁有什麼：數字跟單位寫在一起，點了直接跳到那一段 */
+.toc{margin-bottom:24px;}
+.toc .tt{font-size:12px;font-weight:700;color:var(--dim);letter-spacing:0.05em;margin-bottom:8px;}
+.toc ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px;}
+.toc a{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1px solid var(--gold-dim);border-radius:var(--pill);padding:7px 15px;font-size:14px;font-weight:700;color:var(--ink);transition:border-color .2s;}
+.toc a:hover{border-color:var(--gold);}
+.toc a b{font-family:"Inter";font-weight:800;color:var(--gold);}
+.toc a i{font-style:normal;color:var(--gold);font-size:12px;}
+/* 自介卡：全站固定。上面一句是對讀者的承諾，下面是證明 */
+.mid-intro{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-md);padding:16px 20px;margin-bottom:24px;}
+.mid-intro .slogan{font-family:var(--serif);font-weight:900;font-size:min(18px,4vw);white-space:nowrap;line-height:1.45;color:var(--ink);margin-top:12px;}
+
+.mid-intro .who{display:flex;align-items:center;gap:14px;}
+.mid-intro .who img{width:76px;height:76px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);}
+.mid-intro .nm{font-weight:900;font-size:16px;line-height:1.3;color:var(--ink);}
+.mid-intro .tt2{font-size:12px;color:var(--dim);line-height:1.4;}
+.mid-intro .proof{display:flex;align-items:flex-end;gap:14px;border-top:1px dashed var(--line);margin-top:12px;padding-top:11px;}
+.mid-intro .num{flex-shrink:0;line-height:1.2;}
+.mid-intro .num .d{font-size:11px;color:var(--dim);}
+.mid-intro .num .v{font-family:"Inter";font-weight:800;font-size:18px;color:var(--gold);white-space:nowrap;}
+.mid-intro .txt{font-size:14.5px;line-height:1.6;color:var(--text);padding-left:14px;border-left:1px solid var(--line);}
+.mid-intro .txt b{color:var(--ink);}
+.m-br{display:none;}
+
+/* ═════ ② 乾貨區 ═════ */
+.sec{position:relative;z-index:1;padding:38px 30px;border-top:1px solid var(--line);}
+.sec-tag{display:inline-block;background:rgba(var(--a-rgb),0.14);color:var(--gold);font-size:12px;font-weight:700;padding:5px 15px;border:1px solid var(--gold-dim);border-radius:var(--pill);margin-bottom:16px;letter-spacing:0.05em;}
+.sec h2{font-family:var(--serif);font-weight:900;font-size:24px;line-height:1.42;margin-bottom:14px;color:var(--ink);}
+.sec>p{font-size:15px;color:var(--text);line-height:1.9;margin-bottom:14px;}
+.tipline{font-size:13.5px;color:var(--dim);line-height:1.75;border-left:2px solid var(--gold-dim);padding-left:14px;margin:13px 0 2px;}
+.tipline b{color:var(--gold);}
+
+.tblwrap{overflow-x:auto;margin:12px 0 4px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--card);}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px;}
+.tbl th{background:rgba(var(--a-rgb),0.12);color:var(--gold);font-weight:700;text-align:left;padding:10px 13px;border-bottom:2px solid var(--gold-dim);white-space:nowrap;}
+.tbl td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.6;}
+.tbl td:first-child{font-family:"Inter";font-weight:800;color:var(--gold);}
+.tbl td:nth-child(2){font-weight:700;color:var(--ink);white-space:nowrap;}
+.tbl tr:last-child td{border-bottom:none;}
+
+.acc{display:flex;flex-direction:column;gap:10px;}
+details.ch{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;}
+details.ch[open]{border-color:var(--gold-dim);box-shadow:0 4px 18px rgba(var(--sh-rgb),0.07);}
+details.ch summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:13px;padding:16px 18px;user-select:none;}
+details.ch summary::-webkit-details-marker{display:none;}
+.ch-n{flex-shrink:0;min-width:34px;height:30px;border-radius:8px;background:rgba(var(--a-rgb),0.14);border:1px solid var(--gold-dim);color:var(--gold);font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center;}
+.ch-t{flex:1;font-weight:700;font-size:14.5px;line-height:1.4;}
+.ch-t .en{font-weight:400;color:var(--dim);font-size:12.5px;}
+.ch-mk{flex-shrink:0;width:22px;height:22px;position:relative;}
+.ch-mk::before,.ch-mk::after{content:"";position:absolute;background:var(--gold);border-radius:2px;transition:transform .25s ease,opacity .25s;}
+.ch-mk::before{top:10px;left:4px;width:14px;height:2px;}
+.ch-mk::after{top:4px;left:10px;width:2px;height:14px;}
+details.ch[open] .ch-mk::after{transform:rotate(90deg);opacity:0;}
+.ch-body{padding:6px 18px 18px;border-top:1px solid var(--line);}
+.ch-body p{font-size:14px;line-height:1.82;margin:10px 0;}
+.pos{background:rgba(var(--a-rgb),0.08);border:1px solid var(--gold-dim);border-radius:12px;padding:11px 14px;margin:10px 0 2px;font-size:13.6px;line-height:1.72;}
+.pos b{color:var(--gold);}
+.judge{border-radius:12px;padding:11px 14px;margin:7px 0;font-size:13.6px;line-height:1.72;}
+.judge.no{background:var(--no-bg);border:1px solid var(--no-line);color:#7a3320;}
+.judge.ok{background:var(--ok-bg);border:1px solid var(--ok-line);color:#2f5228;}
+.judge .jl{font-weight:700;font-size:11.5px;letter-spacing:0.05em;display:block;margin-bottom:2px;}
+.judge.no .jl{color:var(--no);}
+.judge.ok .jl{color:var(--ok);}
+
+.cp{background:var(--code);border:2px solid var(--gold);border-radius:var(--r-md);padding:16px;margin:12px 0 2px;position:relative;box-shadow:0 10px 34px rgba(var(--sh-rgb),0.16);}
+.cp .pl{font-family:var(--mono);font-size:10.5px;letter-spacing:0.08em;color:var(--gold-bright);margin-bottom:11px;max-width:calc(100% - 96px);}
+.cp pre{font-family:var(--mono);font-size:12px;line-height:1.85;color:var(--code-tx);white-space:pre-wrap;word-break:break-word;}
+.cp .ph{color:var(--gold-bright);}
+.copy-btn{position:absolute;top:11px;right:11px;background:var(--gold);border:1px solid var(--gold);color:var(--on-accent);font-family:var(--sans);font-size:12px;font-weight:700;padding:7px 16px;border-radius:50px;cursor:pointer;}
+
+.ck{display:flex;gap:11px;align-items:flex-start;padding:9px 0;cursor:pointer;border-bottom:1px dashed var(--line);}
+.ck:last-of-type{border-bottom:none;}
+.ck input{appearance:none;-webkit-appearance:none;flex-shrink:0;width:19px;height:19px;margin-top:4px;border:2px solid var(--gold-dim);border-radius:5px;background:var(--bg2);cursor:pointer;position:relative;transition:all .18s;}
+.ck input:checked{background:var(--gold);border-color:var(--gold);}
+.ck input:checked::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid var(--on-accent);border-width:0 2.5px 2.5px 0;transform:rotate(45deg);}
+.ck span{font-size:14.5px;line-height:1.7;}
+.ck input:checked + span{color:var(--faint);text-decoration:line-through;}
+.cklist{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-md);padding:8px 18px;}
+
+/* ═════ ③ 研究所介紹：跟上面同一套米色＋白卡，不另外換成深色 ═════ */
+.inst{position:relative;z-index:1;padding:44px 30px 40px;border-top:1px solid var(--line);}
+.inst .kk{display:inline-block;background:rgba(var(--a-rgb),0.14);color:var(--gold);font-size:12px;font-weight:700;padding:5px 15px;border:1px solid var(--gold-dim);border-radius:var(--pill);margin-bottom:16px;letter-spacing:0.05em;}
+.inst h2{font-family:var(--serif);font-weight:900;font-size:24px;line-height:1.42;margin-bottom:16px;color:var(--ink);}
+.inst h2 .g{color:var(--gold);}
+.inst .lead{font-family:var(--serif);font-weight:700;font-size:16.5px;line-height:1.7;color:var(--ink);margin-bottom:16px;padding-left:14px;border-left:3px solid var(--gold);}
+.founder{margin-bottom:24px;}
+.founder p{font-size:14.5px;line-height:1.9;color:var(--text);margin-bottom:10px;}
+.founder p b{color:var(--gold);}
+.big{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 30px;}
+.big .b{background:var(--card);border:1px solid var(--line);border-top:3px solid var(--gold);border-radius:var(--r-md);padding:16px 10px;text-align:center;}
+.big .bn{font-family:"Inter";font-weight:800;font-size:24px;color:var(--gold);line-height:1.1;}
+.big .bl{font-size:12px;color:var(--dim);margin-top:6px;line-height:1.5;}
+.inst h3{font-family:var(--serif);font-weight:900;font-size:18px;margin:6px 0 14px;color:var(--ink);}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;}
+.tool{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;}
+.tool.main{grid-column:1 / -1;border-color:var(--gold-dim);border-left:3px solid var(--gold);background:linear-gradient(165deg,var(--card) 0%,var(--card2) 100%);}
+.tool .tn{font-weight:900;font-size:15px;color:var(--ink);margin-bottom:4px;}
+.tool .tn em{font-style:normal;font-size:11px;font-weight:700;color:var(--on-accent);background:var(--gold);border-radius:50px;padding:1px 8px;margin-left:6px;vertical-align:2px;}
+.tool .tn em.soon{background:rgba(0,0,0,0.08);color:var(--dim);}
+.tool .td{font-size:13px;color:var(--dim);line-height:1.7;}
+.qa{background:var(--card);border:1px solid var(--line);border-radius:var(--r-md);padding:4px 18px 16px;margin-bottom:30px;}
+.qa .q{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--ink);margin:14px 0 4px;}
+.qa .q::before{content:"Q";color:var(--gold);font-family:"Inter";font-weight:800;margin-right:8px;}
+.qa .a{font-size:13.8px;color:var(--dim);line-height:1.8;}
+.fit .f{display:flex;gap:10px;font-size:14px;line-height:1.7;margin-bottom:9px;color:var(--text);}
+.fit .f::before{content:"\2714";color:var(--gold);font-weight:700;flex-shrink:0;}
+.btn-wrap{text-align:center;margin-top:30px;background:linear-gradient(165deg,var(--card) 0%,var(--card2) 100%);border:1px solid var(--gold-dim);border-radius:var(--r-lg);padding:26px 18px;}
+.skbtn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--on-accent);border-radius:var(--pill);padding:17px 46px;font-weight:900;font-size:18px;box-shadow:0 8px 28px rgba(var(--a-rgb),0.30);transition:transform var(--bounce);position:relative;overflow:hidden;}
+.skbtn:hover{transform:translateY(-3px);}
+.skbtn::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);transform:skewX(-25deg);animation:shine 3.4s ease-in-out infinite;}
+@keyframes shine{0%{left:-100%;}22%{left:160%;}100%{left:160%;}}
+.btn-note{margin-top:14px;font-size:12.5px;color:var(--dim);}
+
+.footer{position:relative;z-index:1;border-top:1px solid var(--line);padding:22px 30px 40px;text-align:center;}
+.footer .fa{font-style:italic;font-size:14px;color:var(--gold);font-weight:700;}
+.footer .fc{font-size:11px;color:var(--faint);margin-top:8px;line-height:1.7;}
+
+/* ── 手機版 ── */
+@media(max-width:600px){
+  .hero{padding:40px 20px 28px;}
+  .hero h1{font-size:28px;}
+  .sec{padding:32px 20px;}
+  .sec h2{font-size:21px;}
+  .mid-intro .proof{flex-direction:column;align-items:flex-start;gap:6px;}
+  .mid-intro .num{display:flex;align-items:baseline;gap:8px;}
+  .mid-intro .num .d{font-size:13px;}
+  .mid-intro .txt{padding-left:0;border-left:none;}
+  .m-br{display:inline;}
+  .tbl{font-size:13px;}
+  .tbl th,.tbl td{padding:10px 10px;}
+  details.ch summary{padding:15px 16px;align-items:flex-start;}
+  .ch-t .en{display:block;margin-top:3px;}
+  .ch-mk{margin-top:4px;}
+  .inst{padding:34px 20px 32px;}
+  .inst h2{font-size:21px;}
+  .founder p{font-size:min(14.5px,calc((100vw - 40px) / 26.5));}
+  .big .bn{font-size:20px;}
+  .tools{grid-template-columns:1fr;}
+  .skbtn{font-size:16px;padding:15px 26px;white-space:nowrap;}
+  .footer{padding:20px 20px 36px;}
+}
+
+/* ── 總覽頁：搜尋框＋卡片 ── */
+.find{width:100%;font:inherit;font-size:15px;padding:13px 18px;border:1px solid var(--gold-dim);border-radius:var(--pill);background:var(--card);color:var(--text);outline:none;margin-bottom:6px;}
+.find:focus{border-color:var(--gold);}
+.cards{display:flex;flex-direction:column;gap:10px;}
+a.card{display:block;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:var(--r-md);padding:15px 18px;color:var(--text);transition:transform .2s,border-color .2s;}
+a.card:hover{transform:translateX(3px);border-color:var(--gold);}
+a.card .t{font-weight:900;font-size:15.5px;color:var(--ink);line-height:1.5;}
+a.card .d{font-size:13px;color:var(--dim);line-height:1.65;margin-top:4px;}
+.empty{display:none;font-size:14px;color:var(--dim);padding:10px 2px;}
+</style>
+</head>
+<body>
+<script>document.documentElement.className+=' js';</script>
+<div class="glow"><div class="g1"></div><div class="g2"></div></div>
+
+<!-- ═════ ① 懸浮按鈕：電腦版右側卡片、手機版底部按鈕。滑到最下面「關於我」時自動收起 ═════ -->
+<div class="float-cta" id="float-cta">
+  <a class="fc-pill" href="https://lin.ee/TqHObui" target="_blank" rel="noopener">免費預約財務規劃諮詢 <span class="ar">→</span></a>
+  <div class="fc-card">
+    <div class="k">NEXT STEP</div>
+    <h4>想知道自己的資產<br><span class="g">還能怎麼安排？</span></h4>
+    <p>從免費諮詢開始，了解適合自己的資產與現金流規劃方向。</p>
+    <a href="https://lin.ee/TqHObui" target="_blank" rel="noopener">免費預約財務規劃諮詢</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ═════ 開頭：這頁是什麼 ═════ -->
+  <header class="hero">
+    <!-- 要換：kicker／標題／副標／說明／這頁有什麼 -->
+    <div class="kicker">ALL PAGES · 資源總覽</div>
+    <h1>祈祈<br><span class="g">所有資源一次看</span></h1>
+    <div class="h-sub">現金流入門指南、資產規劃觀念與財商資源，全部整理在這裡。</div>
+    <p class="hero-sub">貼文送出去的每一份完整版，都整理在這一頁。用下面的搜尋框，輸入關鍵字就能找到。</p>
+    <!-- 自介卡：放在說明之後、「這頁有」之前 -->
+    <div class="mid-intro">
+      <div class="who">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAFAAUADASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAMFAgQGAQgHCf/EAEAQAAEDAgQEBAQEBAQEBwAAAAEAAgMEEQUSITEGE0FRByJhcRQygZEII0KhFbHB0TNSYpIXcuHwJCVDU3Ois//EABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/8QAIBEBAQACAwADAQEBAAAAAAAAAAECEQMhMRJBURMiYf/aAAwDAQACEQMRAD8A+y0REBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQERR1VRBS00lTUyshhiaXySPdZrWjUknoEEijqKiCnZnnmjib3e4NH7r5m8XPxEVEssuGcCnlU4Ba7EXs87/WMHYf6ivnbirivifFZHzVuKVVU9xzEzTOfr/JTbUxr+kFPV0tTf4ephmtvkeHW+ymX8wcF4s4xwasbiGEVFZTSxuB5kUhAPv0IX0D4dfipxuN0FHxXhFPVMbZrpoLskI6kgmxKrL69RUvBfFGDcX4DDjWB1QqKWW4PRzHDdrh0IV0gIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIC+S/xbeK01ZjD+AsDncaWncG15iOtRL0i0/SOo6n2X7/AONnF44J8OcTxqNzRVCP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" alt="祈祈">
+        <div><div class="nm">祈祈</div><div class="tt2">打造穩定現金流｜財務規劃師</div></div>
+      </div>
+      <div class="slogan">學會管理金錢，讓人生有更多選擇權</div>
+      <div class="proof">
+        <div class="num"><div class="d">我的財務轉變</div><div class="v">10 個月</div></div>
+        <div class="txt"><b>協助想改善財務／增加資產的人，學會資產規劃與打造穩定現金流</b><br class="m-br">從了解自己的財務現況開始，找到下一步的規劃方向。</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═════ ② 所有頁面：每多一頁，在「卡片開始」下面加一張，最新的放最上面 ═════ -->
+  <section class="sec">
+    <input class="find" id="find" type="search" placeholder="找找看：輸入關鍵字">
+    <div class="empty" id="empty">沒有找到，換個關鍵字試試</div>
+  </section>
+  <section class="sec" id="all">
+    <span class="sec-tag">全部</span>
+    <h2>我整理的資源</h2>
+    <div class="cards">
+      <!-- 卡片開始 -->
+      <a class="card" href="cash-flow-starter-guide.html"><div class="t">現金流入門指南</div><div class="d">從收入中斷風險切入，3 分鐘認識現金流、用錢順序與不同收入來源。</div></a>
+      <!-- 卡片結束 -->
+    </div>
+  </section>
+
+  <!-- ═════ ③ 關於我：每一頁都一樣，不跟著乾貨改 ═════ -->
+  <section class="inst" id="institute">
+    <div class="kk">ABOUT · 祈祈｜感情有底氣 x 人生有選擇</div>
+    <h2>我曾經只懂得努力賺錢<br><span class="g">卻不懂得讓錢留下來</span></h2>
+
+    <p class="lead">協助想改善財務、增加資產的人，學會資產規劃與打造穩定現金流。</p>
+    <div class="founder">
+      <p>以前的我不懂理財，只知道不斷用體力換收入。時間被工作綁住，努力賺來的錢卻沒有真正留下來。</p>
+      <p>2025 年 8 月，因為遭到朋友男友詐騙，我才開始認真正視自己的金錢觀念，重新學習資產規劃與現金流管理。後來，我不只解決了負債，還替自己打造每月超過 4 萬元的現金流。現在有更多時間陪伴家人，也能安排自己想要的旅行。我才真正明白，學會管理金錢，不只是為了賺更多，而是讓自己的人生有更多選擇權。</p>
+    </div>
+
+    <!-- 三個數字：沒有真的數字就整段刪掉，不要編 -->
+    <div class="big">
+      <div class="b"><div class="bn">10 個月</div><div class="bl">完成財務轉變</div></div>
+      <div class="b"><div class="bn">500 萬+</div><div class="bl">個人資產</div></div>
+      <div class="b"><div class="bn">4 萬+</div><div class="bl">每月增加現金流</div></div>
+    </div>
+
+    <h3>我能協助你的三件事</h3>
+    <div class="tools">
+      <div class="tool main"><div class="tn">個人資產規劃<em>主打</em></div><div class="td">協助你了解自己的財務狀況，找到適合的資產規劃方向。</div></div>
+      <div class="tool"><div class="tn">打造穩定現金流</div><div class="td">學習如何運用現有資源，規劃適合自己的現金流來源。</div></div>
+      <div class="tool"><div class="tn">建立正確的金錢觀念</div><div class="td">重新理解金錢的使用順序，讓每一筆錢都有更清楚的安排。</div></div>
+    </div>
+
+    <h3>你可能卡在這幾件事</h3>
+    <div class="qa">
+      <div class="q">我現在沒有很多錢，也可以做資產規劃嗎？</div>
+      <div class="a">當然可以。每個人的收入、資產和財務狀況都不同，我們會根據你的實際情況，協助你規劃適合自己的資產配置方向。</div>
+      <div class="q">我完全不懂投資理財，也適合找你諮詢嗎？</div>
+      <div class="a">絕對適合！以前的我也踩過很多坑，從來沒有人教我正確的用錢順序。後來我才發現，原來消費跟累積資產不一定是二選一。我想教你的，就是如何在消費的同時，也懂得把錢留下來。</div>
+    </div>
+
+    <h3>適合這樣的人</h3>
+    <div class="fit">
+      <div class="f">有收入或資產，卻不知道如何規劃現金流</div>
+      <div class="f">想學會用錢的順序，讓人生有更多選擇權</div>
+      <div class="f">房貸繳得很辛苦，想了解有哪些改善財務壓力的方法</div>
+    </div>
+
+    <div class="btn-wrap">
+      <a class="skbtn" href="https://lin.ee/TqHObui" target="_blank" rel="noopener">免費預約財務規劃諮詢 →</a>
+      <div class="btn-note">免費預約｜依個人財務狀況提供規劃方向</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="fa">祈祈 @chi131411</div>
+    <div class="fc">Instagram：@chi131411<br>※ 文中數字為個人經驗，不代表每個人都能有相同結果。投資與資產配置涉及市場波動、費用及本金損失風險。配息不等於獲利，也不保證固定收益；應依個人財務條件與風險承受能力評估。</div>
+  </footer>
+
+</div>
+
+<script>
+// 複製：每個灰底框右上角的按鈕，複製同一框裡的文字
+document.querySelectorAll('.copy-btn').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var txt = btn.parentElement.querySelector('pre').innerText;
+    function done(){ btn.textContent = '已複製'; setTimeout(function(){ btn.textContent = '複製'; }, 1800); }
+    function fallback(){ var t=document.createElement('textarea'); t.value=txt; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} t.remove(); done(); }
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(done, fallback); } else { fallback(); }
+  });
+});
+
+// 頁內跳轉：不靠網址的 #，直接捲過去（預覽視窗、IG 內建瀏覽器裡 # 有時不會動）
+document.querySelectorAll('a[href^="#"]').forEach(function(link){
+  link.addEventListener('click', function(e){
+    var target = document.getElementById(link.getAttribute('href').slice(1));
+    if(!target) return;
+    e.preventDefault();
+    target.classList.add('vis');
+    target.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+// 搜尋：輸入關鍵字，只留下符合的卡片
+var find = document.getElementById('find');
+if(find){ find.addEventListener('input', function(){
+  var q = this.value.trim().toLowerCase(), n = 0;
+  document.querySelectorAll('a.card').forEach(function(c){ var ok = !q || c.textContent.toLowerCase().indexOf(q) >= 0; c.style.display = ok ? '' : 'none'; if(ok) n++; });
+  document.getElementById('empty').style.display = n ? 'none' : 'block';
+}); }
+
+// 懸浮按鈕：「關於我」出現在畫面上時收起，避免兩顆按鈕同時出現
+var fc = document.getElementById('float-cta');
+var inst = document.getElementById('institute');
+if(fc && inst && 'IntersectionObserver' in window){
+  new IntersectionObserver(function(es){
+    fc.classList.toggle('hide', es[0].isIntersecting);
+  }, {threshold:0.05}).observe(inst);
+}
+
+// 捲動淡入
+function reveal(){
+  var vh = window.innerHeight;
+  document.querySelectorAll('.fade:not(.vis)').forEach(function(el){
+    if(el.getBoundingClientRect().top < vh*0.94) el.classList.add('vis');
+  });
+}
+window.addEventListener('scroll', reveal, {passive:true});
+window.addEventListener('load', reveal);
+reveal();
+setTimeout(function(){ document.querySelectorAll('.fade').forEach(function(el){ el.classList.add('vis'); }); }, 2500);
+</script>
+
+<!--
+═══════════════════════════════════════════
+學員總覽頁模板（奇點研究所 × D11）
+═══════════════════════════════════════════
+· 這一份上傳時檔名一定是 index.html，網址打開就是它
+· 用兩層大括號包起來的地方都要換成自己的內容，換完不能留下任何一組
+· 自介卡、「關於我」、配色，跟落地頁用同一份資料
+· 每多一頁，在「卡片開始」下面加一張卡片，最新的放最上面；舊的卡片不要刪
+═══════════════════════════════════════════
+-->
+</body>
+</html>
